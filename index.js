@@ -116,7 +116,14 @@ async function run() {
           .project(projectionAdmission)
           .toArray();
         res.send(result);
-      } else if (review) {
+      } else if (review === "reviewlimit") {
+        const result = await collegeCollection
+          .find()
+          .limit(6)
+          .project(projectionReview)
+          .toArray();
+        res.send(result);
+      } else if (review === "review") {
         const result = await collegeCollection
           .find()
           .project(projectionReview)
