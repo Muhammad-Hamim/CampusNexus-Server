@@ -69,6 +69,8 @@ async function run() {
 
     app.get("/colleges", async (req, res) => {
       const image = req.query.image;
+      const limit = req.query.limit;
+      const review = req.query.review;
       const projection = {
         name: 1,
         image: 1,
@@ -76,6 +78,7 @@ async function run() {
         admissionDates: 1,
         researchPapers: 1,
       };
+      const projectionReview = { name: 1, reviews: 1 };
       const projectionImgLimit = { name: 1, image: 1 };
       const projectionAdmission = {
         name: 1,
@@ -111,6 +114,19 @@ async function run() {
         const result = await collegeCollection
           .find()
           .project(projectionAdmission)
+          .toArray();
+        res.send(result);
+      } else if (review) {
+        const result = await collegeCollection
+          .find()
+          .project(projectionReview)
+          .toArray();
+        res.send(result);
+      } else if (limit === "limit") {
+        const result = await collegeCollection
+          .find()
+          .limit(8)
+          .project(projection)
           .toArray();
         res.send(result);
       } else {
