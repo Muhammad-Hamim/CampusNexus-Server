@@ -67,6 +67,84 @@ async function run() {
       res.send(result);
     });
 
+    // app.get("/colleges", async (req, res) => {
+    //   const image = req.query.image;
+    //   const limit = req.query.limit;
+    //   const review = req.query.review;
+    //   const projection = {
+    //     name: 1,
+    //     image: 1,
+    //     rating: 1,
+    //     admissionDates: 1,
+    //     researchPapers: 1,
+    //   };
+    //   const projectionReview = { name: 1, reviews: 1 };
+    //   const projectionImgLimit = { name: 1, image: 1 };
+    //   const projectionAdmission = {
+    //     name: 1,
+    //     image: 1,
+    //     admissionDates: 1,
+    //     subjects: 1,
+    //   };
+    //   const projectionImgNoLimit = { name: 1, image: 1, collegeGallery: 1 };
+    //   if (image == "limit") {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .limit(18)
+    //       .project(projectionImgLimit)
+    //       .toArray();
+    //     res.send(result);
+    //   } else if (image == "nolimit") {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .project(projectionImgNoLimit)
+    //       .toArray();
+    //     const images = result.map((item) => {
+    //       const { _id, name, image, collegeGallery } = item;
+    //       return {
+    //         _id,
+    //         name,
+    //         imageOne: image,
+    //         imageTwo: collegeGallery[0],
+    //         imageThree: collegeGallery[1],
+    //       };
+    //     });
+    //     res.send(images);
+    //   } else if (image == "admission") {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .project(projectionAdmission)
+    //       .toArray();
+    //     res.send(result);
+    //   } else if (review === "reviewlimit") {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .limit(6)
+    //       .project(projectionReview)
+    //       .toArray();
+    //     res.send(result);
+    //   } else if (review === "review") {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .project(projectionReview)
+    //       .toArray();
+    //     res.send(result);
+    //   } else if (limit === "limit") {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .limit(8)
+    //       .project(projection)
+    //       .toArray();
+    //     res.send(result);
+    //   } else {
+    //     const result = await collegeCollection
+    //       .find()
+    //       .project(projection)
+    //       .toArray();
+    //     res.send(result);
+    //   }
+    // });
+
     app.get("/colleges", async (req, res) => {
       const image = req.query.image;
       const limit = req.query.limit;
@@ -87,63 +165,81 @@ async function run() {
         subjects: 1,
       };
       const projectionImgNoLimit = { name: 1, image: 1, collegeGallery: 1 };
-      if (image == "limit") {
-        const result = await collegeCollection
-          .find()
-          .limit(18)
-          .project(projectionImgLimit)
-          .toArray();
-        res.send(result);
-      } else if (image == "nolimit") {
-        const result = await collegeCollection
-          .find()
-          .project(projectionImgNoLimit)
-          .toArray();
-        const images = result.map((item) => {
-          const { _id, name, image, collegeGallery } = item;
-          return {
-            _id,
-            name,
-            imageOne: image,
-            imageTwo: collegeGallery[0],
-            imageThree: collegeGallery[1],
-          };
-        });
-        res.send(images);
-      } else if (image == "admission") {
-        const result = await collegeCollection
-          .find()
-          .project(projectionAdmission)
-          .toArray();
-        res.send(result);
-      } else if (review === "reviewlimit") {
-        const result = await collegeCollection
-          .find()
-          .limit(6)
-          .project(projectionReview)
-          .toArray();
-        res.send(result);
-      } else if (review === "review") {
-        const result = await collegeCollection
-          .find()
-          .project(projectionReview)
-          .toArray();
-        res.send(result);
-      } else if (limit === "limit") {
-        const result = await collegeCollection
-          .find()
-          .limit(8)
-          .project(projection)
-          .toArray();
-        res.send(result);
-      } else {
-        const result = await collegeCollection
-          .find()
-          .project(projection)
-          .toArray();
-        res.send(result);
+
+      try {
+        if (image === "limit") {
+          const result = await collegeCollection
+            .find()
+            .limit(18)
+            .project(projectionImgLimit)
+            .toArray();
+          res.send(result);
+        }
+
+        if (image === "nolimit") {
+          const result = await collegeCollection
+            .find()
+            .project(projectionImgNoLimit)
+            .toArray();
+          const images = result.map((item) => {
+            const { _id, name, image, collegeGallery } = item;
+            return {
+              _id,
+              name,
+              imageOne: image,
+              imageTwo: collegeGallery[0],
+              imageThree: collegeGallery[1],
+            };
+          });
+          res.send(images);
+        }
+
+        if (image === "admission") {
+          const result = await collegeCollection
+            .find()
+            .project(projectionAdmission)
+            .toArray();
+          res.send(result);
+        }
+
+        if (review === "reviewlimit") {
+          const result = await collegeCollection
+            .find()
+            .limit(6)
+            .project(projectionReview)
+            .toArray();
+          res.send(result);
+        }
+
+        if (review === "review") {
+          const result = await collegeCollection
+            .find()
+            .project(projectionReview)
+            .toArray();
+          res.send(result);
+        }
+
+        if (limit === "limit") {
+          const result = await collegeCollection
+            .find()
+            .limit(8)
+            .project(projection)
+            .toArray();
+          res.send(result);
+        }
+        if (!image && !review && !limit) {
+          const result = await collegeCollection
+            .find()
+            .project(projection)
+            .toArray();
+          res.send(result);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Internal Server Error");
       }
     });
+
     app.get("/colleges/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
